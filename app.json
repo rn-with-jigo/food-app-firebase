@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "e-food-app",
+    "slug": "e-food-app",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "e-food-app"
+}
