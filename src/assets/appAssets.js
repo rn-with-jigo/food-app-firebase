@@ -4,4 +4,6 @@ export const AppAssets = {
     Order: require("./package.png"),
     Notify: require("./notification.png"),
     Transaction: require("./transaction.png"),
+    Deleteitem: require("./trash-bin.png"),
+    Edititem: require("./edit.png"),
 }

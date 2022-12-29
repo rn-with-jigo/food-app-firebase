@@ -13,6 +13,7 @@ const SplashScreen = ({navigation}) => {
   return (
     <View style={styles.screen_main_container}>
       <Text style={styles.logo_text_style}>E Food</Text>
+      <Text style={styles.logo_text_subtile}>Admin dash</Text>
       <Text style={styles.logo_text_subline_style}>get your food quickly.</Text>
     </View>
   )
@@ -25,6 +26,11 @@ const styles = StyleSheet.create({
         fontWeight:"700",
         color:"tomato",
         fontSize: 30,
+    },
+    logo_text_subtile:{
+        fontWeight:"700",
+        color:"tomato",
+        fontSize: 16,
     },
     logo_text_subline_style:{
         fontWeight:"500",

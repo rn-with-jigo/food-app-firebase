@@ -1,13 +1,16 @@
 import { Dimensions, Image, Keyboard, KeyboardAvoidingView, PermissionsAndroid, Platform, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { launchImageLibrary } from 'react-native-image-picker';
 import storage from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
-import { useNavigation } from '@react-navigation/native';
-import { navString } from '../../constants/navStrings';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { navString } from '../constants/navStrings';
+import { DB_ITEMS } from "@env";
 
-const AddTab = () => {
+const EditItemsDetail = () => {
 
+    const route = useRoute();
+    // console.log(route.params);
     const navigation = useNavigation();
 
     const [imagedata, setImagedata] = useState(null)
@@ -15,9 +18,21 @@ const AddTab = () => {
     const [price, setPirce] = useState(0)
     const [discountPrice, setDiscountPrice] = useState(0)
     const [discription, setDiscription] = useState('')
-    const [imgeurl, setImageurl] = useState('')
+    const [imgeurl, setImageurl] = useState('');
+
+    const [isImageSelected, setIsImageSelected] = useState(false);
+
+    useEffect(() => {
+        const { id, data } = route.params;
+        setDiscountPrice(data?.discountprice)
+        setPirce(data?.price)
+        setDiscription(data?.discription)
+        setImagedata({ assets: [{ uri: data?.imgeurl }] })
+        setName(data?.name)
+    }, [route])
 
     async function requesttogetiamge() {
+        setIsImageSelected(true)
         if (Platform.OS === "android") {
             try {
                 const granted = await PermissionsAndroid.request(
@@ -34,12 +49,15 @@ const AddTab = () => {
                 );
                 if (granted === PermissionsAndroid.RESULTS.GRANTED) {
                     console.log("You can use the camera");
+                    setIsImageSelected(true)
                     openGallery()
                 } else {
                     console.log("Camera permission denied");
+                    setIsImageSelected(false)
                 }
             } catch (err) {
                 console.warn(err);
+                setIsImageSelected(false)
             }
         } else {
             openGallery()
@@ -59,28 +77,41 @@ const AddTab = () => {
 
     async function uploadImage() {
         navigation.push(navString.Loadder);
-        const reference = storage().ref(imagedata.assets[0].fileName);
-        const pathToFile = imagedata.assets[0].uri;
-        // console.log(reference.fullPath);
-        await reference.putFile(pathToFile);
-        const url = await storage().ref(reference.fullPath).getDownloadURL();
-        console.log("userls is => ", url);
-        uploadItem(url);
+
+        if (isImageSelected) {
+            // first delete old one.
+            if (route.params.data?.imgeurl) {
+                let getpic_from_stoage = storage().refFromURL(route.params.data.imgeurl)
+                getpic_from_stoage.delete().then(() => console.log("item image also remove form storage on update action"));
+            }
+            const reference = storage().ref(imagedata.assets[0].fileName);
+            const pathToFile = imagedata.assets[0].uri;
+            // console.log(reference.fullPath);
+            await reference.putFile(pathToFile);
+            const url = await storage().ref(reference.fullPath).getDownloadURL();
+            console.log("userls is => ", url);
+            uploadItem(url);
+        } else {
+
+            uploadItem(route.params.data?.imgeurl);
+        }
     }
 
     function uploadItem(imgUri) {
         firestore()
-            .collection('Items')
-            .add({
+            .collection(DB_ITEMS)
+            .doc(route.params?.id)
+            .update({
                 name: name,
                 price: price,
                 discountprice: discountPrice,
                 discription: discription,
-                imgeurl: (imgUri)?imgUri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjUinX3N0rZjQ1mYFOCpJXcmJGgdvNm09ZAw&usqp=CAU'
+                imgeurl: (imgUri) ? imgUri : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjUinX3N0rZjQ1mYFOCpJXcmJGgdvNm09ZAw&usqp=CAU'
             })
             .then(() => {
-                console.log('item added!');
+                console.log('item update!');
                 navigation.pop(1);
+                navigation.goBack()
             });
     }
 
@@ -155,7 +186,7 @@ const AddTab = () => {
     )
 }
 
-export default AddTab
+export default EditItemsDetail
 
 const styles = StyleSheet.create({
     add_item_style: {

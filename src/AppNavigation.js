@@ -2,7 +2,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import React from 'react'
 import { navString } from './constants/navStrings'
-import { ABOUTSCREEN, HOMESCREEN, LOADDERSCREEN, LOGINSCREEN, SPLASHSCREEN } from './screens/screen'
+import { ABOUTSCREEN, EDITITEMDETAIL, HOMESCREEN, LOADDERSCREEN, LOGINSCREEN, SPLASHSCREEN } from './screens/screen'
 
 const AppNavigation = () => {
     const AppNav = createNativeStackNavigator();
@@ -18,7 +18,10 @@ const AppNavigation = () => {
                 <AppNav.Screen component={LOADDERSCREEN} name={navString.Loadder} options={{
                     headerShown: false, headerBackButtonMenuEnabled: false,
                     presentation: "transparentModal",
-                    animation:'fade'
+                    animation: 'fade'
+                }} />
+                <AppNav.Screen component={EDITITEMDETAIL} name={navString.Edititemdetailscreen} options={{
+                    title: "Edit Item"
                 }} />
             </AppNav.Navigator>
         </NavigationContainer>
