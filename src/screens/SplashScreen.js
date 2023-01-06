@@ -1,14 +1,29 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React, { useEffect } from 'react'
 import { navString } from '../constants/navStrings';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { storageKeys } from '../constants/storageKeys';
 
 const SplashScreen = ({navigation}) => {
 
     useEffect(() => {
         setTimeout(() => {
-            navigation.navigate(navString.Login)
+            // navigation.navigate(navString.Login)
+            checkAuth();
         }, 3000);
+        
     }, [])
+
+    async function checkAuth() {
+        await AsyncStorage.getItem(storageKeys.storeUserEmail, (err, res) => {
+            if(res){
+                console.log("res splash", res);
+                navigation.navigate(navString.Homescreen)
+            } else {
+                navigation.navigate(navString.Login)
+            }
+        })
+    }
 
   return (
     <View style={styles.screen_main_container}>

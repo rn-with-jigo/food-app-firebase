@@ -117,7 +117,7 @@ const ItemsTab = () => {
 
   return (
     <View style={styles.item_main_conatiner}>
-      <View style={{padding:10, alignSelf:"flex-end"}}>
+      {/* <View style={{padding:10, alignSelf:"flex-end"}}>
         <TouchableOpacity
           onPress={() => {
             getAllitem();
@@ -125,12 +125,12 @@ const ItemsTab = () => {
         >
           <Text style={{fontSize:14, color:"blue", fontWeight:"600"}}>Reload</Text>
         </TouchableOpacity>
-      </View>
+      </View> */}
       <FlatList
         data={allItems}
         renderItem={renderItemAll}
         keyExtractor={item => item.id.toString()}
-        contentContainerStyle={{ padding: 15 }}
+        contentContainerStyle={{  padding: 15 }}
         // ListEmptyComponent={renderEmptyComponent}
         ItemSeparatorComponent={() => {
           return (

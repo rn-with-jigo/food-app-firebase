@@ -1,6 +1,7 @@
 export {default as SPLASHSCREEN} from "./SplashScreen"
 export {default as HOMESCREEN} from "./HomeScreen"
 export {default as EDITITEMDETAIL} from "./EditItemsDetail"
+export {default as ORDERDETAILS} from "./OrderDetails"
 
 export {default as LOGINSCREEN} from "./Login"
 

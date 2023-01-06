@@ -76,7 +76,8 @@ const AddTab = () => {
                 price: price,
                 discountprice: discountPrice,
                 discription: discription,
-                imgeurl: (imgUri)?imgUri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjUinX3N0rZjQ1mYFOCpJXcmJGgdvNm09ZAw&usqp=CAU'
+                imgeurl: (imgUri)?imgUri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjUinX3N0rZjQ1mYFOCpJXcmJGgdvNm09ZAw&usqp=CAU',
+                qty: 1,
             })
             .then(() => {
                 console.log('item added!');

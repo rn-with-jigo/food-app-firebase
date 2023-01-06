@@ -55,6 +55,10 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
+  return  YES;
+//  UIStoryboard *sb = [UIStoryboard storyboardWithName:@"LaunchScreen" bundle:nil];
+//    UIViewController *vc = [sb instantiateInitialViewController];
+//    rootView.loadingView = vc.view;
 
   [super application:application didFinishLaunchingWithOptions:launchOptions];
 

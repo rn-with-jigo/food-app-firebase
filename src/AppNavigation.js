@@ -2,7 +2,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import React from 'react'
 import { navString } from './constants/navStrings'
-import { ABOUTSCREEN, EDITITEMDETAIL, HOMESCREEN, LOADDERSCREEN, LOGINSCREEN, SPLASHSCREEN } from './screens/screen'
+import { ABOUTSCREEN, EDITITEMDETAIL, HOMESCREEN, LOADDERSCREEN, LOGINSCREEN, ORDERDETAILS, SPLASHSCREEN } from './screens/screen'
 
 const AppNavigation = () => {
     const AppNav = createNativeStackNavigator();
@@ -22,6 +22,9 @@ const AppNavigation = () => {
                 }} />
                 <AppNav.Screen component={EDITITEMDETAIL} name={navString.Edititemdetailscreen} options={{
                     title: "Edit Item"
+                }} />
+                  <AppNav.Screen component={ORDERDETAILS} name={navString.OrderDetails} options={{
+                    title: "Order Detials"
                 }} />
             </AppNav.Navigator>
         </NavigationContainer>

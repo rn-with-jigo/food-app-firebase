@@ -4,6 +4,9 @@ import ScreenWrapper from '../components/ScreenWrapper';
 import firestore from '@react-native-firebase/firestore';
 import { navString } from '../constants/navStrings';
 import CustomToast from '../components/CustomToast';
+import { DB_ITEMS, DB_ADMIN } from "@env"
+import { storageKeys } from '../constants/storageKeys';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Login = ({ navigation }) => {
 
@@ -22,25 +25,57 @@ const Login = ({ navigation }) => {
 
     async function checkLogin() {
         // console.log(navigation);
-        // console.log(admins);
+        // console.log(username);
         // return;
         if (username.length <= 0 || password.length <= 0) {
             return CustomToast("please enter datas");
         } else {
             navigation.push(navString.Loadder)
-            const admins = await firestore().collection('admin').get();
-            const { docs } = admins;
-            //     console.log("admins => ", admins.docs[0].data());
-            if (docs[0]._data?.email == username && docs[0]._data?.password == password) {
-                setTimeout(() => {
-                    navigation.pop(1);
-                    CustomToast("Welcome to Admin Dash..");
-                    navigation.push(navString.Homescreen)
-                }, 2000)
-            } else {
-                CustomToast("password or username is not matched");
-                navigation.pop(1);
-            }
+
+            firestore()
+                .collection(DB_ADMIN)
+                // Filter results
+                .where('email', '==', username)
+                .get()
+                .then(async querySnapshot => {
+                    console.log(querySnapshot._data);
+                    if (querySnapshot.docs.length > 0) {
+                        let uData = querySnapshot.docs[0]._data;
+                        console.log(uData);
+                        if (username == uData.email && password == uData.password) {
+                            await AsyncStorage.setItem(storageKeys.storeUserEmail, uData.email);
+                            await AsyncStorage.setItem(storageKeys.useruuid, uData.aid)
+                            await AsyncStorage.setItem(storageKeys.userName, uData.name)
+                            await AsyncStorage.setItem(storageKeys.userContact, uData.contact)
+                            setTimeout(() => {
+                                navigation.pop(1);
+                                CustomToast("Welcome to User Dash..");
+                                navigation.push(navString.Homescreen)
+                            }, 2000)
+                        } else {
+                            CustomToast("password not matched");
+                            navigation.pop(1);
+                        }
+                    } else {
+                        CustomToast("password or username is not matched");
+                        navigation.pop(1);
+                    }
+                });
+            return;
+
+            // const admins = await firestore().collection('admin').get();
+            // const { docs } = admins;
+            // //     console.log("admins => ", admins.docs[0].data());
+            // if (docs[0]._data?.email == username && docs[0]._data?.password == password) {
+            //     setTimeout(() => {
+            //         navigation.pop(1);
+            //         CustomToast("Welcome to Admin Dash..");
+            //         navigation.push(navString.Homescreen)
+            //     }, 2000)
+            // } else {
+            //     CustomToast("password or username is not matched");
+            //     navigation.pop(1);
+            // }
         }
 
     }
