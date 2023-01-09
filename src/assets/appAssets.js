@@ -6,4 +6,6 @@ export const AppAssets = {
     Transaction: require("./transaction.png"),
     Deleteitem: require("./trash-bin.png"),
     Edititem: require("./edit.png"),
+    RadioIcon: require("./radio-button.png"),
+    RadioFillIcon: require("./radio-on-button.png"),
 }
