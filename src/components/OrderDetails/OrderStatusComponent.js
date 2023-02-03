@@ -1,39 +1,61 @@
 import { Dimensions, FlatList, Modal, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import SelectorComponent from '../SelectorComponent'
+import { DB_ORDERS, DB_USER } from "@env";
+import firestore from '@react-native-firebase/firestore';
 
-const OrderStatusComponent = () => {
+const OrderStatusComponent = ({ oid }) => {
+    // console.log("ordStatus => ", ordStatus);
 
     const [isSelectedOpen, setIsSelectedOpen] = useState(false);
 
     const [selectedIndex, setSelectedIndex] = useState(0);
 
-    useEffect(() => {
-        console.log("seleceted Index -< ", selectedIndex);
-    }, [selectedIndex])
+    const [orderSataus, setOrderStatus] = useState(null);
 
     const StatusList = [
         {
             id: "#S001",
-            status: "IsPlaced",
+            status: "Placed",
         },
         {
             id: "#S002",
-            status: "IsAccepted",
+            status: "Accepted",
         },
         {
             id: "#S003",
-            status: "IsCancled",
+            status: "Cancled",
         },
         {
             id: "#S004",
-            status: "IsPrepared",
+            status: "Prepared",
         },
         {
             id: "#S005",
-            status: "IsCompleted",
+            status: "Completed",
         },
     ]
+
+    useEffect(() => {
+        console.log("seleceted Index -< ", selectedIndex);
+        (async () => {
+            let get_id = await(await firestore().collection(DB_ORDERS).where("oid", "==", oid).get()).docs;
+            // console.log(get_id[0].id);
+            const subscriber = firestore()
+                .collection(DB_ORDERS)
+                .doc(get_id[0].id)
+                .onSnapshot(documentSnapshot => {
+                    // console.log('item_data data: ', documentSnapshot._data.orderStatus);
+                    setOrderStatus(documentSnapshot._data.orderStatus)
+                });
+
+            // Stop listening for updates when no longer required
+            return () => subscriber();
+        })();
+        //     setSelectedIndex(index)
+        // }
+    }, [selectedIndex])
+
 
     return (
         <View style={{
@@ -63,7 +85,7 @@ const OrderStatusComponent = () => {
                     color: "tomato",
                     fontSize: 14,
                     marginVertical: 10,
-                }}>Current Order Status: <Text style={{ fontWeight: "bold", color: "#000" }}>{StatusList[selectedIndex].status}</Text></Text>
+                }}>Current Order Status: <Text style={{ fontWeight: "bold", color: "#000" }}>{orderSataus || "---"}</Text></Text>
                 <TouchableOpacity style={{
                     width: "50%",
                     height: 50,
@@ -104,6 +126,7 @@ const OrderStatusComponent = () => {
                             setIsSelector={setIsSelectedOpen}
                             selectedIndex={selectedIndex}
                             setSelectedIndex={setSelectedIndex}
+                            oid={oid}
                         />
                     </View>
                 </View>

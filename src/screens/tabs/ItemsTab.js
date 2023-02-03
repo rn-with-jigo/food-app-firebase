@@ -58,7 +58,11 @@ const ItemsTab = () => {
   const renderItemAll = ({ item, index }) => {
     // console.log(item);
     return (
-      <View style={styles.item_single_container}>
+      <TouchableOpacity style={styles.item_single_container}
+        onPress={() => {
+          navigation.navigate(navString.ProductDetailsScreen, {itemId: item.id, itemData: item.data})
+        }}
+      >
         <Image source={{ uri: item.data.imgeurl }} style={styles.item_image} />
 
         <View style={{ flex: 1, justifyContent: "space-between", flexDirection: "row" }}>
@@ -98,7 +102,7 @@ const ItemsTab = () => {
 
           </View>
         </View>
-      </View>
+      </TouchableOpacity>
     )
   }
 
@@ -130,7 +134,7 @@ const ItemsTab = () => {
         data={allItems}
         renderItem={renderItemAll}
         keyExtractor={item => item.id.toString()}
-        contentContainerStyle={{  padding: 15 }}
+        contentContainerStyle={{  padding: 15, paddingBottom:80, }}
         // ListEmptyComponent={renderEmptyComponent}
         ItemSeparatorComponent={() => {
           return (
@@ -164,7 +168,7 @@ const styles = StyleSheet.create({
   },
   item_discription_style: {
     ontWeight: "400",
-    fontSize: 14,
+    fontSize: 12,
     color: "gray",
     marginTop: 5,
   },
@@ -181,7 +185,7 @@ const styles = StyleSheet.create({
   },
   item_name_style: {
     fontWeight: "600",
-    fontSize: 18,
+    fontSize: 16,
     color: "#000",
   },
   item_price_contianer: {

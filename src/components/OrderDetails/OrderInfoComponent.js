@@ -1,21 +1,25 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-const OrderInfoComponent = () => {
+const OrderInfoComponent = (props) => {
+
+    const {oid, orderPayType, orderPayId, odate} = props.orderData;
+
   return (
     <View style={styles.dord_info_container}>
-            <Text style={styles.dord_order_id_text}>#ORD01gHf78djFH</Text>
+            <Text style={styles.dord_order_id_text}>#{oid.substring(0,16) || "-----"}</Text>
             <View style={styles.dord_payment_type_container}>
                 <Text style={{
                     fontWeight:"700",
                     fontSize:16,
                     color:"#fff",
-                }}>COD</Text>
+                }}>{ orderPayType || "---"}</Text>
             </View>
+            {orderPayType != "COD"?
+            <Text style={styles.dord_payment_id_text}>{orderPayId || "---"}</Text>
+            :null}
 
-            <Text style={styles.dord_payment_id_text}>tnx_0fdGj78sdfLp0</Text>
-
-            <Text style={styles.dord_date_text}>26 Mar, 2023, 6:00 pm</Text>
+            <Text style={styles.dord_date_text}>{odate || "---"}</Text>
         </View>
   )
 }

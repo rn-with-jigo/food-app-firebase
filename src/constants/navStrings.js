@@ -3,6 +3,11 @@ export const navString = {
     Homescreen: "home",
     Edititemdetailscreen: "edititem",
     OrderDetails: "orderdetails",
+    ItemDetailsScreen: "itemdetails",
+    ModuleCreatorScreen: "modulecreator",
+
+    ProductDetailsScreen: "productdetails",
+    ProductModulesScreen: "productmodule",
 
     Login: "login",
 

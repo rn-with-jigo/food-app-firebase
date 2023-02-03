@@ -53,12 +53,13 @@ const OrderTab = () => {
         orderItemsList={item?.oitems || [{}]}
         orderId={item?.oid.substring(1, 8) || null}
         orderPrice={item?.orderTotal || null}
-        status={item?.status === "success" ? 'In Progress' : null}
+        status={item?.isPlaced ||  null}
         date={item?.odate || null}
-        paymentId={item?.paymentId || null}
-        paymentType={item?.paymentType || null}
+        paymentId={item?.orderPayId || null}
+        paymentType={item?.orderPayType || null}
         userId={item?.userId || null}
         username={item?.orderBy || null}
+        orderItem={item}
       />
       // <Text>Jio</Text>
     )

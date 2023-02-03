@@ -9,13 +9,32 @@ import OrderTimeLineComponent from '../components/OrderDetails/OrderTimeLineComp
 import OrderHeadingComponent from '../components/OrderDetails/OrderHeadingComponent'
 import OrderStatusComponent from '../components/OrderDetails/OrderStatusComponent'
 
-const OrderDetails = ({ navigation }) => {
+
+const OrderDetails = ({ navigation, route }) => {
+
+  const { data } = route.params;
+  
+  // console.log(data);
+  let orderData = {
+    oid: data.oid,
+    orderPayType: data.orderPayType,
+    orderPayId: data.orderPayId,
+    odate: data.odate
+  }
+  let orderUserData = {
+    ouid: data.userId,
+    orderBy: data.orderBy,
+    orderEamil: data.orderEamil,
+    orderContact: data.orderContact,
+    orderTotal: data.orderTotal,
+    orderAddress: data.orderAddress
+  }
 
   useEffect(() => {
     navigation.setOptions({
       headerTintColor: "tomato"
     })
-  }, [])
+  }, [])  
 
   const OrderTimeLog = [
     {
@@ -49,27 +68,36 @@ const OrderDetails = ({ navigation }) => {
       <View style={{ flex: 1, }}>
         <ScrollView>
 
-            <OrderInfoComponent />
+          <OrderInfoComponent orderData={orderData} />
 
-            <OrderHeadingComponent title={"Order User info"} />
-            <OrderUserDetComponent />
+          <OrderHeadingComponent title={"Order User info"} />
+          <OrderUserDetComponent orderUserData={orderUserData} />
 
-            <OrderHeadingComponent title={"Order Items"} />
-            <OrderItesmsComponent />
-            <OrderItesmsComponent />
-            <OrderItesmsComponent />
+          <OrderHeadingComponent title={"Order Items"} />
+          {(data?.oitems) ? data?.oitems.length > 0 ?
+            data?.oitems.map((ele, index) => {
+              // console.log("ele => ",ele);
+              return (
+                <OrderItesmsComponent key={index} item={ele} customization={ele?.customization || []} />
+              )
+            })
+            : null
+            : null
+          }
 
-            <OrderHeadingComponent title={"Order Additional Notes"} />
-            <OrderAddtionalNoteComponent />
 
-            <OrderHeadingComponent title={"Order TimeLine"} />
-            <OrderTimeLineComponent 
-              list={OrderTimeLog}
-              reachedAtId={"#S005"}
-            />
+          <OrderHeadingComponent title={"Order Additional Notes"} />
+          <OrderAddtionalNoteComponent />
 
-            <OrderHeadingComponent title={"Order Actions"} />
-            <OrderStatusComponent />
+          <OrderHeadingComponent title={"Order TimeLine"} />
+          <OrderTimeLineComponent
+            list={data?.oactivity || OrderTimeLog}
+            reachedAtId={"#S005"}
+            oid={data?.oid}
+          />
+
+          <OrderHeadingComponent title={"Order Actions"} />
+          <OrderStatusComponent ordStatus={data.orderStatus} oid={data.oid} />
         </ScrollView>
       </View>
     </ScreenWrapper>

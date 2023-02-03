@@ -17,11 +17,12 @@ interface OrderListCardProps {
     userData?: Object | String | undefined,
     username?: String | undefined,
     userId: String | undefined,
+    orderItem?: Object | undefined,
 }
 
 const OrderListCard = (props: OrderListCardProps) => {
 
-    const { date, orderId, orderItemsList, orderPrice, paymentType, paymentId, username, status, userId } = props;
+    const { date, orderId, orderItemsList, orderPrice, paymentType, paymentId, username, status, userId, orderItem } = props;
 
     const navigation = useNavigation();
 
@@ -60,7 +61,9 @@ const OrderListCard = (props: OrderListCardProps) => {
 
                 <TouchableOpacity style={{}}
                     onPress={() => {
-                        navigation.navigate(navString.OrderDetails)
+                        navigation.navigate(navString.OrderDetails, {
+                            data: orderItem
+                        })
                     }}
                 >
 
@@ -77,6 +80,8 @@ const OrderListCard = (props: OrderListCardProps) => {
                     <Text style={{ fontWeight: "700", color: "gray", fontSize: 14 }}>{paymentId || "---"}</Text>
                     <Text style={{ fontWeight: "700", color: "tomato", fontSize: 18, marginTop: 15, }}>@{username || "----"}</Text>
                 </TouchableOpacity>
+
+
                 <View style={styles.ord_subtitle_price_container}>
                     <Text style={{ fontWeight: "500", color: "#000", fontSize: 16, }}>Order Items</Text>
                     <Text style={{ fontWeight: "700", color: "tomato", fontSize: 18, }}>Rs. {orderPrice || "000"}</Text>

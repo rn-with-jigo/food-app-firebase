@@ -8,4 +8,7 @@ export const AppAssets = {
     Edititem: require("./edit.png"),
     RadioIcon: require("./radio-button.png"),
     RadioFillIcon: require("./radio-on-button.png"),
+    CloseIcon: require("./delete.png"),
+    DownIcon: require("./down.png"),
+    InfoIcon: require("./info-btn.png"),
 }

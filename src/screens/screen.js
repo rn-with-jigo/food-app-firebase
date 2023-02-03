@@ -3,6 +3,9 @@ export {default as HOMESCREEN} from "./HomeScreen"
 export {default as EDITITEMDETAIL} from "./EditItemsDetail"
 export {default as ORDERDETAILS} from "./OrderDetails"
 
+export {default as PRODUCTDETAILSSCREEN} from "./Product/ProductDetailsScreen"
+export {default as PRODUCTMODULESSCREEN} from "./Product/ProductModulesScreen"
+
 export {default as LOGINSCREEN} from "./Login"
 
 export {default as LOADDERSCREEN} from "./LoadderScreen"
@@ -13,3 +16,5 @@ export {default as TRANSACTIOnTAB} from "./tabs/TransactionTab"
 export {default as ADDTABS} from "./tabs/AddTab"
 export {default as ORDERTAB} from "./tabs/OrderTab"
 export {default as NOTIFICATIONTAB} from "./tabs/NotificationTab"
+export {default as ITEMDETAILSSCREEN} from "./ItemDetailsScreen"
+export {default as MODULECREATORSCREEN} from "./ModuleCreatorScreen"

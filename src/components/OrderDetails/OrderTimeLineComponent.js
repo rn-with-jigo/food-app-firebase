@@ -1,6 +1,7 @@
 import { FlatList, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
-
+import { DB_ORDERS } from "@env";
+import firestore from '@react-native-firebase/firestore';
 
 interface OrderTimeLineComponentProps {
     list: Array | undefined | [],
@@ -8,15 +9,25 @@ interface OrderTimeLineComponentProps {
 }
 
 const OrderTimeLineComponent = (props: OrderTimeLineComponentProps) => {
-    const { list, reachedAtId } = props;
+    const { list, reachedAtId, oid } = props;
 
     const [timelineList, setTimelineList] = useState([]);
 
     useEffect(() => {
-        console.log(list);
-        if (list != undefined || list != null) {
-            setTimelineList(list);
-        }
+        // console.log(list);
+        // if (list != undefined || list != null) {
+        //     setTimelineList(list);
+        // }
+        let subscriber = firestore()
+            .collection(DB_ORDERS)
+            .where("oid", "==", oid)
+            .onSnapshot(data_snapshot => {
+                let whole_data = data_snapshot.docs[0]._data.oactivity;
+                console.log(data_snapshot.docs[0]._data);
+                setTimelineList(whole_data)
+            })
+
+        return () => subscriber();
     }, [])
 
     const renderTimeLine = (ele, index) => {
@@ -26,23 +37,23 @@ const OrderTimeLineComponent = (props: OrderTimeLineComponentProps) => {
                     fontWeight: "600",
                     color: "tomato",
                     fontSize: 14
-                }}>{ele?.title || "Order Placed"}</Text>
+                }}>{ "Order Is "+ ele?.activityAction || "Order Placed"}</Text>
                 <Text style={{
                     fontWeight: "bold",
                     color: "gray",
                     fontSize: 11,
 
-                }}>{ele?.time || "@ 2 Jan, 2023 | 6:00 AM"}</Text>
+                }}>{ele?.activityDate || "@ 2 Jan, 2023 | 6:00 AM"}</Text>
                 <View style={{
                     position: "absolute",
                 }}>
                     <View style={{
-                        width: 2, backgroundColor: reachedAtId == ele.sid?"green":"gray",
+                        width: 2, backgroundColor: reachedAtId == ele.sid ? "green" : "gray",
                         height: 40, left: -20, zIndex: 9
                     }} />
                     <View style={{
                         height: 16, width: 16, borderRadius: 8,
-                        backgroundColor: reachedAtId == ele.sid?"green":"gray", position: "absolute", left: -27, top: 5,
+                        backgroundColor: reachedAtId == ele.sid ? "green" : "gray", position: "absolute", left: -27, top: 5,
                     }} />
                 </View>
             </View>
